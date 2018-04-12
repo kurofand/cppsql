@@ -1,0 +1,7 @@
+a.out
+sqlTest
+*.txt
+*.ini
+main1.cpp
+*.hpp.*
+main.cpp
