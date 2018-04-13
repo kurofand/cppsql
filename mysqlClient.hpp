@@ -11,7 +11,7 @@ class MySQLClient
 		bool connect();
 		void setDb(const char* dbName);
 		void closeConnection();
-		std::vector<std::string>* executeQuery(const char* query);
+		void executeQuery(const char* query, std::vector<std::string>& resVec);
 	private:
 		const char* host;
 		const char* userName;

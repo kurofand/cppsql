@@ -32,44 +32,32 @@ bool MySQLClient::connect()
 	}
 }
 
-std::vector<std::string>* MySQLClient::executeQuery(const char* query)
+void MySQLClient::executeQuery(const char* query, std::vector<std::string>& resVec)
 {
-	std::vector<std::string> *res;
-//ACHTUNG!! тут меморилик засчёт создания нового и не удаления его. когда-нибудь я должен буду это исправить на умные поинтеры
-	res=new std::vector<std::string>();
 	sql::Statement *stmt;
+	sql::ResultSet *stmtRes;
 	stmt=this->con->createStatement();
-	//stmt->execute(query);
 	std::string queryType;
 	uint8_t i=0;
-//компилятор страшно ругался что не можно сравнивать поинтер и целое(я в принципе его понимаю, но был уверен что элемент поинтер массива рассматривается не как поинтер, а как целое), поэтому его пришлось обмануть. оно работает, но думается мне что может отвалиться в любой момент
 	while(query[i]!=*" ")
-		queryType+=query[i++];
+		queryType+query[i++];
 	if(queryType=="SELECT")
 	{
 		sql::ResultSet *stmtRes;
 		stmtRes=stmt->executeQuery(query);
 		while(stmtRes->next())
 		{
-			uint8_t j=0;
+			i=0;
 			std::string rowStr;
 			while(true)
 				try{
-					rowStr.append(stmtRes->getString(++j));
+					rowStr.append(stmtRes->getString(++i));
 					rowStr.append("|");
 				}
 				catch(...){
-					res->push_back(rowStr);
+					resVec.push_back(rowStr);
 					break;
 				}
-//		std::cout<<"before push_back"<<std::endl;
-//		res->push_back(stmtRes->getString("name").c_str());
-
-//		res->push_back(stmtRes->getString("name"));
-
-//		std::cout<<stmtRes->getString("name").c_str()<<std::endl;
-//		std::cout<<res->back()<<std::endl;
-//		std::cout<<"after push_back"<<std::endl;
 		}
 		delete stmtRes;
 	}
@@ -77,20 +65,7 @@ std::vector<std::string>* MySQLClient::executeQuery(const char* query)
 		stmt->execute(query);
 
 	delete stmt;
-	return res;
 }
-
-/*void MySQLClient::executeQuery(const char* query, std::vector<const char*>* resVec)
-{
-	sql::Statement *stmt;
-	sql::ResultSet *stmtRes;
-	stmt=this->con->createStatement();
-	stmtRes=stmt->executeQuery(query);
-	while(stmtRes->next())
-		resVec->push_back(stmtRes->getString("name").c_str());
-	delete stmt;
-	delete stmtRes;
-}*/
 
 void MySQLClient::closeConnection()
 {
