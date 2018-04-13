@@ -40,7 +40,7 @@ void MySQLClient::executeQuery(const char* query, std::vector<std::string>& resV
 	std::string queryType;
 	uint8_t i=0;
 	while(query[i]!=*" ")
-		queryType+query[i++];
+		queryType+=query[i++];
 	if(queryType=="SELECT")
 	{
 		sql::ResultSet *stmtRes;
