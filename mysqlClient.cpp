@@ -6,6 +6,7 @@
 #include <cppconn/resultset.h>
 #include <cppconn/prepared_statement.h>
 #include <cppconn/resultset.h>
+#include <fstream>
 
 MySQLClient::MySQLClient(const char* host, const char* userName, const char* pass, const char* dbName)
 {
@@ -14,6 +15,26 @@ MySQLClient::MySQLClient(const char* host, const char* userName, const char* pas
 	this->password=pass;
 	this->dbName=dbName;
 }
+//по неизвестной мне причине если пытаться загрузить значения из файла тут, а не в мейне, то они ломаются при выходе из функции
+MySQLClient::MySQLClient(const char* fileName)
+{
+	std::ifstream ini;
+	ini.open(fileName);
+	std::string params[4], line;
+	if(ini.is_open())
+	{
+
+		for(uint8_t i=0;i<4;i++)
+			ini>>params[i];
+		ini.close();
+		this->host=params[0].c_str();
+		this->userName=params[1].c_str();
+		this->password=params[2].c_str();
+		this->dbName=params[3].c_str();
+	}
+	else
+		std::cout<<"Error with loading ini file!"<<std::endl;
+}
 
 bool MySQLClient::connect()
 {
@@ -21,6 +42,7 @@ bool MySQLClient::connect()
 	try{
 //собираем строку для коннекта к заданной базе
 		std::string buf(this->host);
+		std::cout<<this->host<<std::endl;
 		buf.append("/");
 		buf.append(this->dbName);
 		this->con=driver->connect(buf, this->userName, this->password);
@@ -55,6 +77,8 @@ void MySQLClient::executeQuery(const char* query, std::vector<std::string>& resV
 					rowStr.append("|");
 				}
 				catch(...){
+					if(rowStr.back()==*"|")
+						rowStr.pop_back();
 					resVec.push_back(rowStr);
 					break;
 				}
