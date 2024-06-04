@@ -1,11 +1,9 @@
 #include "mysqlClient.hpp"
 
-//#include "mysql_connection.h"
-//#include <cppconn/driver.h>
-#include <cppconn/exception.h>
-#include <cppconn/resultset.h>
-#include <cppconn/prepared_statement.h>
-#include <cppconn/resultset.h>
+#include <jdbc/cppconn/exception.h>
+#include <jdbc/cppconn/resultset.h>
+#include <jdbc/cppconn/prepared_statement.h>
+#include <jdbc/cppconn/resultset.h>
 #include <fstream>
 
 MySQLClient::MySQLClient(const char* host, const char* userName, const char* pass, const char* dbName)

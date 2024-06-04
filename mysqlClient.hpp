@@ -1,5 +1,5 @@
-#include "mysql_connection.h"
-#include <cppconn/driver.h>
+#include <jdbc/mysql_driver.h>
+#include <jdbc/mysql_connection.h>
 #include <string>
 #include <vector>
 #include <fstream>
