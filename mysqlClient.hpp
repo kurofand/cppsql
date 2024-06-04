@@ -15,10 +15,10 @@ class MySQLClient
 		void executeQuery(const char* query, std::vector<std::string>& resVec);
 		~MySQLClient();
 	private:
-		const char* host;
-		const char* userName;
-		const char* password;
-		const char* dbName;
+		std::string host;
+		std::string userName;
+		std::string password;
+		std::string dbName;
 		sql::Driver *driver;
 		sql::Connection *con;
 };

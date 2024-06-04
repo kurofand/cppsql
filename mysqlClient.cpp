@@ -13,7 +13,7 @@ MySQLClient::MySQLClient(const char* host, const char* userName, const char* pas
 	this->password=pass;
 	this->dbName=dbName;
 }
-//по неизвестной мне причине если пытаться загрузить значения из файла тут, а не в мейне, то они ломаются при выходе из функции
+
 MySQLClient::MySQLClient(const char* fileName)
 {
 	std::ifstream ini;
@@ -25,10 +25,10 @@ MySQLClient::MySQLClient(const char* fileName)
 		for(uint8_t i=0;i<4;i++)
 			ini>>params[i];
 		ini.close();
-		this->host=params[0].c_str();
-		this->userName=params[1].c_str();
-		this->password=params[2].c_str();
-		this->dbName=params[3].c_str();
+		this->host=params[0];
+		this->userName=params[1];
+		this->password=params[2];
+		this->dbName=params[3];
 	}
 	else
 		std::cout<<"Error with loading ini file!"<<std::endl;
