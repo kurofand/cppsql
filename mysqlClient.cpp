@@ -80,7 +80,7 @@ void MySQLClient::executePreparedStatement(const char* query, std::vector<std::m
 		if(params.at(i).type()==typeid(int))
 			prepStmt->setInt(i+1, std::any_cast<int>(params.at(i)));
 		else if(params.at(i).type()==typeid(std::string))
-			prepStmt->setString(i, std::any_cast<std::string>(params.at(i)));
+			prepStmt->setString(i+1, std::any_cast<std::string>(params.at(i)));
 	sql::ResultSet *res=prepStmt->executeQuery();
 	if(isSelect(query))
 		manageResult(query, resVec, res);
