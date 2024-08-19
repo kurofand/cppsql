@@ -27,5 +27,5 @@ class MySQLClient
 		std::string password;
 		std::string dbName;
 		sql::Driver *driver;
-		sql::Connection *con;
+		sql::Connection *con=nullptr;
 };

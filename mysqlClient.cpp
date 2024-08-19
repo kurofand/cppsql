@@ -139,5 +139,6 @@ void MySQLClient::closeConnection()
 
 MySQLClient::~MySQLClient()
 {
-	delete this->con;
+	if(this->con!=nullptr)
+		delete this->con;
 }
