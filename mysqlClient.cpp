@@ -31,7 +31,8 @@ MySQLClient::MySQLClient(const char* fileName)
 		this->dbName=params[3];
 	}
 	else
-		std::cout<<"Error with loading ini file!"<<std::endl;
+		errMsg="Error occured on open ini file!";
+
 }
 
 bool MySQLClient::connect()
@@ -45,12 +46,13 @@ bool MySQLClient::connect()
 		return true;
 	}
 	catch(const sql::SQLException &e){
-		std::cout<<"Connection was not estabilished!:"<<std::endl<<e.what()<<std::endl;
+		errMsg="Connection was not established! Exception: ";
+		errMsg+=e.what();
 		return false;
 	}
 }
 
-void MySQLClient::executeQuery(const char* query, std::vector<std::map<std::string, std::string>> &resVec)
+void MySQLClient::executeQuery(const char* query, std::vector<std::map<std::string, std::string>> *resVec)
 {
 	sql::Statement *stmt;
 	sql::ResultSet *stmtRes;
@@ -72,7 +74,7 @@ void MySQLClient::executeQuery(const char* query, std::vector<std::map<std::stri
 	delete stmt;
 }
 
-void MySQLClient::executePreparedStatement(const char* query, std::vector<std::map<std::string, std::string>> &resVec, const std::vector<std::any> &params)
+void MySQLClient::executePreparedStatement(const char* query, std::vector<std::map<std::string, std::string>> *resVec, const std::vector<std::any> &params)
 {
 	sql::PreparedStatement *prepStmt;
 	prepStmt=con->prepareStatement(query);
@@ -88,7 +90,7 @@ void MySQLClient::executePreparedStatement(const char* query, std::vector<std::m
 	delete res;
 }
 
-void MySQLClient::manageResult(const char* query, std::vector<std::map<std::string, std::string>> &resVec, sql::ResultSet *resSet)
+void MySQLClient::manageResult(const char* query, std::vector<std::map<std::string, std::string>> *resVec, sql::ResultSet *resSet)
 {
 	std::vector<std::string> *colNames=new std::vector<std::string>();
 	getColNamesFromQuery(query, *colNames);
@@ -99,7 +101,7 @@ void MySQLClient::manageResult(const char* query, std::vector<std::map<std::stri
 		std::map<std::string, std::string> row;
 		for(unsigned int i=1;i<=colCount;i++)
 			row[colNames->at(i-1)]=resSet->getString(i);
-		resVec.push_back(row);
+		resVec->push_back(row);
 	}
 	delete colNames;
 }
@@ -134,7 +136,8 @@ void MySQLClient::closeConnection()
 {
 	this->con->close();
 	if(this->con->isValid())
-		std::cout<<"Close connection failed!"<<std::endl;
+		errMsg="Close connection failed!";
+
 }
 
 MySQLClient::~MySQLClient()

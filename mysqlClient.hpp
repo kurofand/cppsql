@@ -15,17 +15,25 @@ class MySQLClient
 		bool connect();
 		void setDb(const char* dbName);
 		void closeConnection();
-		void executeQuery(const char* query, std::vector<std::map<std::string, std::string>> &resVec);
-		void executePreparedStatement(const char* query, std::vector<std::map<std::string, std::string>>& resVec, const std::vector<std::any> &params);
+
+		void executeQuery(const char* query, std::vector<std::map<std::string, std::string>> *resVec);
+		void executeQuery(const char* query){executeQuery(query, nullptr);}
+
+		void executePreparedStatement(const char* query, std::vector<std::map<std::string, std::string>> *resVec, const std::vector<std::any> &params);
+		void executePreparedStatement(const char* query, const std::vector<std::any> &params){executePreparedStatement(query, nullptr, params);}
+
+		std::string errorMessage(){return std::move(errMsg);}
+
 		~MySQLClient();
 	private:
 		bool isSelect(const char *query);
 		void getColNamesFromQuery(const char *query, std::vector<std::string> &names);
-		void manageResult(const char *query, std::vector<std::map<std::string, std::string>> &resVec, sql::ResultSet *resSet);
+		void manageResult(const char *query, std::vector<std::map<std::string, std::string>> *resVec, sql::ResultSet *resSet);
 		std::string host;
 		std::string userName;
 		std::string password;
 		std::string dbName;
 		sql::Driver *driver;
 		sql::Connection *con=nullptr;
+		std::string errMsg="";
 };
