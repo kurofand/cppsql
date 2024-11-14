@@ -1,6 +1,9 @@
-#include <jdbc/mysql_driver.h>
-#include <jdbc/mysql_connection.h>
-#include <jdbc/cppconn/resultset.h>
+#ifndef MYSQL_CLIENT_HPP
+#define MYSQL_CLIENT_HPP
+
+#include <mysql_driver.h>
+#include <mysql_connection.h>
+#include <cppconn/resultset.h>
 #include <string>
 #include <vector>
 #include <fstream>
@@ -37,3 +40,5 @@ class MySQLClient
 		sql::Connection *con=nullptr;
 		std::string errMsg="";
 };
+
+#endif

@@ -1,7 +1,4 @@
-a.out
-sqlTest
-*.txt
+Makefile
 *.ini
-main1.cpp
 *.hpp.*
 main.cpp

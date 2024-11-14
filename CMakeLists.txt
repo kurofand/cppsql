@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.27.9)
+project(mysqlClient)
+set(SOURCE_LIB mysqlClient.cpp)
+add_library(mysqlClient STATIC ${SOURCE_LIB})
+target_include_directories(mysqlClient PUBLIC /usr/include/jdbc)
+target_link_libraries(mysqlClient mysqlcppconn)

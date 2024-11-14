@@ -1,7 +1,7 @@
 #include "mysqlClient.hpp"
 
-#include <jdbc/cppconn/exception.h>
-#include <jdbc/cppconn/prepared_statement.h>
+#include <cppconn/exception.h>
+#include <cppconn/prepared_statement.h>
 #include <sstream>
 #include <fstream>
 #include <cstring>
