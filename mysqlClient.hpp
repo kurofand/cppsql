@@ -19,11 +19,11 @@ class MySQLClient
 		void setDb(const char* dbName);
 		void closeConnection();
 
-		void executeQuery(const char* query, std::vector<std::map<std::string, std::string>> *resVec);
-		void executeQuery(const char* query){executeQuery(query, nullptr);}
+		bool executeQuery(const char* query, std::vector<std::map<std::string, std::string>> *resVec);
+		bool executeQuery(const char* query){return executeQuery(query, nullptr);}
 
-		void executePreparedStatement(const char* query, std::vector<std::map<std::string, std::string>> *resVec, const std::vector<std::any> &params);
-		void executePreparedStatement(const char* query, const std::vector<std::any> &params){executePreparedStatement(query, nullptr, params);}
+		bool executePreparedStatement(const char* query, std::vector<std::map<std::string, std::string>> *resVec, const std::vector<std::any> &params);
+		bool executePreparedStatement(const char* query, const std::vector<std::any> &params){return executePreparedStatement(query, nullptr, params);}
 
 		std::string errorMessage(){return std::move(errMsg);}
 
